@@ -2,25 +2,21 @@
 // eslint-disable-next-line import/extensions
 import Ship from "./ship.js";
 
-function Square(coords, filled) {
-  if (typeof Square.id === "undefined") {
-    Square.id = 0;
-  } else {
-    Square.id++;
-  }
-  const { id } = Square;
+function Square(coords, filled, id) {
   return { id, coords, filled };
 }
 
 export default function Gameboard() {
   const allShips = [];
   const missedShots = [];
+  let squareID = 0;
 
   const buildBoard = () => {
     const board = [];
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        board.push(Square([i, j], false));
+        board.push(Square([i, j], false, squareID));
+        squareID++;
       }
     }
     return board;

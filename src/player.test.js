@@ -16,12 +16,12 @@ describe("player", () => {
     playerOneBoard.placeShip(3, "vertical", [0, 0]);
     const move = AI.makeMove();
     AI.makeMove();
-    AI.makeMove();
-    AI.makeMove();
-    AI.makeMove();
-    AI.makeMove();
-    console.log(move);
-    console.log(AI.moves);
     expect(move).not.toBeNull();
+  });
+
+  test("AI moves are recorded", () => {
+    const AI = Player("AI", playerTwoBoard, playerOneBoard);
+    AI.makeMove();
+    expect(AI.moves.size).toBe(1);
   });
 });
