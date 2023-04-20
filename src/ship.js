@@ -1,4 +1,4 @@
-export default function Ship(length) {
+export default function Ship(length, location) {
   const getLength = () => length;
   let health = length;
   let sunk = false;
@@ -6,6 +6,7 @@ export default function Ship(length) {
 
   const isSunk = () => sunk;
   const getHits = () => hits;
+  const getLocation = () => location;
 
   const hit = () => {
     health -= 1;
@@ -15,5 +16,5 @@ export default function Ship(length) {
     }
   };
 
-  return { getLength, getHits, hit, isSunk };
+  return { getLength, getHits, getLocation, hit, isSunk };
 }
