@@ -14,6 +14,7 @@ function Square(coords, filled) {
 
 export default function Gameboard() {
   const allShips = [];
+  const missedShots = [];
 
   const buildBoard = () => {
     const board = [];
@@ -41,6 +42,27 @@ export default function Gameboard() {
       (sq) => sq.coords.toString() === coords.toString()
     );
     correspondingSquare.filled = true;
+  };
+
+  // helper function to fetch corresponding square
+  const getSquare = (coords) =>
+    board.find((sq) => sq.coords.toString() === coords.toString());
+
+  // helper function to find ship given a coordinate
+  const findShip = (coords) => {
+    for (let i = 0; i < allShips.length; i++) {
+      const ship = allShips[i];
+      const shipLocation = ship.getLocation();
+
+      for (let j = 0; j < shipLocation.length; j++) {
+        const coordinate = shipLocation[j];
+
+        if (coordinate.toString() === coords.toString()) {
+          return ship;
+        }
+      }
+    }
+    return null;
   };
 
   const placeShip = (length, orientation, coords) => {
@@ -81,20 +103,41 @@ export default function Gameboard() {
     shipLocation.forEach((coordinate) => fillSquare(coordinate));
     const newShip = Ship(length, shipLocation);
     allShips.push(newShip);
+
+    return newShip;
   };
 
-  const receiveAttack = (coords) => { };
+  const receiveAttack = (coords) => {
+    if (!isSquareFilled(coords)) {
+      missedShots.push(getSquare(coords));
+      return null;
+    }
+    const targetedShip = findShip(coords);
+    targetedShip.hit();
+
+    return getSquare(coords);
+  };
 
   const shipsSunk = () => allShips.every((ship) => ship.isSunk());
 
-  return { placeShip, board, receiveAttack, shipsSunk, allShips };
+  return {
+    placeShip,
+    receiveAttack,
+    shipsSunk,
+    allShips,
+    missedShots,
+    findShip,
+  };
 }
 
 // testing
 const nb = Gameboard();
 
 nb.placeShip(4, "horizontal", [0, 0]);
-console.log(nb.allShips[0].getHits());
+const ship = nb.placeShip(4, "horizontal", [6, 0]);
+
+console.log(nb.allShips);
+
 // nb.allShips.forEach((ship) =>
 //   ship.getLocation().forEach((location) => console.log(location))
 // );
