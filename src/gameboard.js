@@ -118,6 +118,7 @@ export default function Gameboard() {
     return getSquare(coords);
   };
 
+  // check if all ships are sunk
   const shipsSunk = () => allShips.every((ship) => ship.isSunk());
 
   return {
@@ -129,18 +130,3 @@ export default function Gameboard() {
     findShip,
   };
 }
-
-// testing
-const nb = Gameboard();
-
-nb.placeShip(4, "horizontal", [0, 0]);
-const ship = nb.placeShip(4, "horizontal", [6, 0]);
-
-console.log(nb.allShips);
-
-// nb.allShips.forEach((ship) =>
-//   ship.getLocation().forEach((location) => console.log(location))
-// );
-// nb.placeShip(4, "horizontal", [0, 0]);
-
-// nb.allShips.forEach((ship) => console.log(ship.getLocation()));

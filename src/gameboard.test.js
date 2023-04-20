@@ -44,4 +44,14 @@ describe("gameboard", () => {
     newGameboard.receiveAttack([1, 0]);
     expect(newGameboard.missedShots.length).toBe(2);
   });
+
+  test("ships correctly sink", () => {
+    newGameboard.placeShip(1, "horizontal", [1, 0]);
+    newGameboard.placeShip(3, "horizontal", [0, 0]);
+    newGameboard.receiveAttack([0, 0]);
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 2]);
+    newGameboard.receiveAttack([1, 0]);
+    expect(newGameboard.shipsSunk()).toBe(true);
+  });
 });
