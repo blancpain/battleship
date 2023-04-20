@@ -45,6 +45,12 @@ describe("gameboard", () => {
     expect(newGameboard.missedShots.length).toBe(2);
   });
 
+  test("missed shot correctly returned", () => {
+    newGameboard.placeShip(4, "horizontal", [0, 0]);
+    const missedShot = newGameboard.receiveAttack([1, 0]);
+    expect(newGameboard.missedShots).toEqual(missedShot);
+  });
+
   test("ships correctly sink", () => {
     newGameboard.placeShip(1, "horizontal", [1, 0]);
     newGameboard.placeShip(3, "horizontal", [0, 0]);

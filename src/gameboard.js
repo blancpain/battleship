@@ -110,7 +110,7 @@ export default function Gameboard() {
   const receiveAttack = (coords) => {
     if (!isSquareFilled(coords)) {
       missedShots.push(getSquare(coords));
-      return null;
+      return missedShots;
     }
     const targetedShip = findShip(coords);
     targetedShip.hit();
@@ -128,5 +128,6 @@ export default function Gameboard() {
     allShips,
     missedShots,
     findShip,
+    getSquare,
   };
 }
