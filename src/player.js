@@ -2,9 +2,12 @@ import Gameboard from "./gameboard";
 
 export default function Player(type, ownBoard, enemyBoard) {
   const moves = new Set();
-  const wins = 0;
+  let wins = 0;
 
   const getType = () => type;
+  const getWins = () => wins;
+  // eslint-disable-next-line no-plusplus
+  const incrementWins = () => wins++;
 
   const makeMove = (coords) => {
     if (type === "AI") {
@@ -23,13 +26,21 @@ export default function Player(type, ownBoard, enemyBoard) {
     // if we are given coords it means it's a human player
     const targetedSquare = enemyBoard.getSquare(coords);
     if (!moves.has(targetedSquare)) {
-      enemyBoard.receiveAttack(targetedSquare);
+      enemyBoard.receiveAttack(coords);
       moves.add(targetedSquare);
     }
     return null;
   };
 
-  // TODO -> placeShip(ownBoard) => ownBoard.placeship()...
+  const checkWin = () => {
+    if (enemyBoard.shipsSunk()) {
+      incrementWins();
+      return true;
+    }
+    return false;
+  };
 
-  return { makeMove, moves, wins, getType };
+  // TODO -> placeShip(coords) => ownBoard.placeship()...
+
+  return { makeMove, moves, getWins, getType, checkWin };
 }

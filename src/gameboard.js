@@ -127,3 +127,6 @@ export default function Gameboard() {
     getSquare,
   };
 }
+
+const asd = Gameboard();
+console.log(asd);
