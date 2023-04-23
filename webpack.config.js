@@ -1,11 +1,7 @@
-/* eslint-disable no-underscore-dangle */
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const config = {
+module.exports = {
   mode: "development",
   entry: "./src/app.js",
   devtool: "inline-source-map",
@@ -16,7 +12,7 @@ const config = {
   },
   output: {
     filename: "main.js",
-    path: resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
@@ -24,17 +20,6 @@ const config = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.m?js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
-      },
-
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
@@ -48,5 +33,3 @@ const config = {
     }),
   ],
 };
-
-export default config;
