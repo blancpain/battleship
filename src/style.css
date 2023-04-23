@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Press+Start+2P&family=Rubik+Vinyl&family=Sigmar+One&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --title-ff: "Sigmar One", cursive;
+  --main-bgc: #6b7db3;
+  --square-bgc: #ccd9ff;
+}
+
+body {
+  background-color: var(--main-bgc);
+}
+
+#title {
+  font-size: 70px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 6px;
+  font-family: var(--title-ff);
+}
+
+.gameboard-container {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+#player-one-board,
+#player-two-board {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: repeat(10, 45px);
+  border: 1px solid gray;
+}
+
+.board-square {
+  height: 45px;
+  width: 45px;
+  border: 1px solid gray;
+  background-color: var(--square-bgc);
+}
+
+.ship {
+  background-color: #000;
+}

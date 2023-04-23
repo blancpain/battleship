@@ -7,6 +7,13 @@ describe("gameboard", () => {
     newGameboard = Gameboard();
   });
 
+  test("correct ship location in square ids returned", () => {
+    newGameboard.placeShip(3, "horizontal", [0, 0]);
+    expect(newGameboard.getShipLocations().toString()).toBe(
+      [0, 1, 2].toString()
+    );
+  });
+
   test("ship cannot be placed out of bounds - vertically", () => {
     expect(newGameboard.placeShip(3, "vertical", [0, 0])).toBeNull();
   });

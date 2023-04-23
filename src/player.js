@@ -1,5 +1,3 @@
-import Gameboard from "./gameboard";
-
 export default function Player(type, ownBoard, enemyBoard) {
   const moves = new Set();
   let wins = 0;

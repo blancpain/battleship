@@ -1,22 +1,26 @@
 /* eslint-disable no-plusplus */
 // eslint-disable-next-line import/extensions
-import Ship from "./ship.js";
+import Ship from "./ship";
 
-function Square(coords, filled, id) {
+function Square(coords, filled) {
+  if (typeof Square.currentID === "undefined") {
+    Square.currentID = 0;
+  } else {
+    Square.currentID++;
+  }
+  const id = Square.currentID;
   return { id, coords, filled };
 }
 
 export default function Gameboard() {
   const allShips = [];
   const missedShots = [];
-  let squareID = 0;
 
   const buildBoard = () => {
     const board = [];
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        board.push(Square([i, j], false, squareID));
-        squareID++;
+        board.push(Square([i, j], false));
       }
     }
     return board;
@@ -117,6 +121,20 @@ export default function Gameboard() {
   // check if all ships are sunk
   const shipsSunk = () => allShips.every((ship) => ship.isSunk());
 
+  const getShipLocations = () => {
+    const shipLocationIDs = [];
+
+    allShips.forEach((ship) => {
+      const shipLocation = ship.getLocation();
+
+      shipLocation.forEach((coord) => {
+        shipLocationIDs.push(getSquare(coord).id);
+      });
+    });
+
+    return shipLocationIDs;
+  };
+
   return {
     placeShip,
     receiveAttack,
@@ -125,8 +143,7 @@ export default function Gameboard() {
     missedShots,
     findShip,
     getSquare,
+    board,
+    getShipLocations,
   };
 }
-
-const asd = Gameboard();
-console.log(asd);
