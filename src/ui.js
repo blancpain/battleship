@@ -1,15 +1,9 @@
-import { initialSetup } from "./game";
-
 export default function GraphicsController() {
   // ui containers
-  const boardContainer = document.querySelector(".gameboard-container");
   const playerOneBoardUI = document.querySelector("#player-one-board");
   const playerTwoBoardUI = document.querySelector("#player-two-board");
 
-  const { playerOneBoard, playerTwoBoard, playerOne, playerTwo } =
-    initialSetup();
-
-  const displayBoards = () => {
+  const displayBoards = (playerOneBoard, playerTwoBoard) => {
     for (let i = 0; i < playerOneBoard.board.length; i++) {
       const squareID = playerOneBoard.board[i].id;
       const newSquare = document.createElement("div");
@@ -27,7 +21,26 @@ export default function GraphicsController() {
     }
   };
 
-  const displayShips = () => {
+  const clearBoards = () => {
+    playerOneBoardUI.childNodes.forEach((node) => {
+      node.classList.add("board-square");
+      node.classList.remove("ship");
+      node.classList.remove("hit");
+      node.classList.remove("miss");
+    });
+
+    playerTwoBoardUI.childNodes.forEach((node) => {
+      node.classList.add("board-square");
+      node.classList.remove("ship");
+      node.classList.remove("hit");
+      node.classList.remove("miss");
+    });
+  };
+
+  const displayWinner = () => {};
+
+  // TODO - for the real game we just don't render playertwo board...
+  const displayShips = (playerOneBoard, playerTwoBoard) => {
     const playerOneShipIDs = playerOneBoard.getShipLocations();
     const playerTwoShipIDs = playerTwoBoard.getShipLocations();
 
@@ -48,5 +61,45 @@ export default function GraphicsController() {
     });
   };
 
-  return { displayBoards, displayShips };
+  const renderMoves = (playerOne, playerTwo, playerTwoBoard) => {
+    playerTwoBoardUI.childNodes.forEach((square) => {
+      square.addEventListener("click", () => {
+        const squareCoords = playerTwoBoard.getCoords(square.dataset.index);
+        const attack = playerOne.makeMove(squareCoords);
+        if (attack === true) {
+          square.classList.add("hit");
+        } else if (attack === false) {
+          square.classList.add("miss");
+        }
+
+        // check if player won on last move
+        if (playerOne.checkWin()) {
+          playerTwoBoardUI.classList.toggle("game-end");
+          clearBoards();
+          return;
+        }
+
+        // player has moved so we call makeMove for the AI
+        const computerMove = playerTwo.makeMoveAI();
+        playerOneBoardUI.childNodes.forEach((node) => {
+          if (Number(node.dataset.index) === Number(computerMove.id)) {
+            if (computerMove.filled) node.classList.add("hit");
+            else if (!computerMove.filled) node.classList.add("miss");
+          }
+        });
+
+        // check if computer won on last move
+        if (playerTwo.checkWin()) {
+          playerTwoBoardUI.classList.toggle("game-end");
+          clearBoards();
+        }
+      });
+    });
+  };
+
+  return {
+    displayBoards,
+    displayShips,
+    renderMoves,
+  };
 }

@@ -45,17 +45,21 @@ describe("gameboard", () => {
     expect(ship.getHits()).toBe(1);
   });
 
+  test("accurate attack returns true", () => {
+    newGameboard.placeShip(4, "horizontal", [0, 0]);
+    expect(newGameboard.receiveAttack([0, 0])).toBe(true);
+  });
+
+  test("missed shot correctly returns false", () => {
+    newGameboard.placeShip(4, "horizontal", [0, 0]);
+    expect(newGameboard.receiveAttack([1, 0])).toBe(false);
+  });
+
   test("inaccurate attacks get recorded as missed shots", () => {
     newGameboard.placeShip(4, "horizontal", [0, 0]);
     newGameboard.receiveAttack([1, 0]);
     newGameboard.receiveAttack([1, 0]);
     expect(newGameboard.missedShots.length).toBe(2);
-  });
-
-  test("missed shot correctly returned", () => {
-    newGameboard.placeShip(4, "horizontal", [0, 0]);
-    const missedShot = newGameboard.receiveAttack([1, 0]);
-    expect(newGameboard.missedShots).toEqual(missedShot);
   });
 
   test("ships correctly sink", () => {
@@ -66,5 +70,9 @@ describe("gameboard", () => {
     newGameboard.receiveAttack([0, 2]);
     newGameboard.receiveAttack([1, 0]);
     expect(newGameboard.shipsSunk()).toBe(true);
+  });
+
+  test("square can be retrieved given an id", () => {
+    expect(newGameboard.getSquareGivenID(1199)).toHaveProperty("id", 1199);
   });
 });

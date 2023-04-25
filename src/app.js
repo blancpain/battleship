@@ -1,6 +1,5 @@
 import "./style.css";
-import GraphicsController from "./ui";
+import Game from "./game";
 
-const graphicsController = GraphicsController();
-graphicsController.displayBoards();
-graphicsController.displayShips();
+const game = Game();
+game.startGame();

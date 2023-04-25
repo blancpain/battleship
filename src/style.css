@@ -27,7 +27,7 @@ body {
 .gameboard-container {
   display: flex;
   justify-content: space-evenly;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 #player-one-board,
@@ -36,6 +36,11 @@ body {
   display: grid;
   grid-template-columns: repeat(10, 45px);
   border: 1px solid gray;
+}
+
+#player-two-board .board-square:not(.miss):not(.hit):hover {
+  filter: opacity(65%);
+  cursor: pointer;
 }
 
 .board-square {
@@ -47,4 +52,21 @@ body {
 
 .ship {
   background-color: #000;
+}
+
+.hit,
+.miss {
+  pointer-events: none;
+}
+
+.hit {
+  background-color: #ff4d4d;
+}
+
+.miss {
+  background-color: lightgreen;
+}
+
+.game-end {
+  pointer-events: none;
 }

@@ -48,6 +48,16 @@ export default function Gameboard() {
   const getSquare = (coords) =>
     board.find((sq) => sq.coords.toString() === coords.toString());
 
+  // helper function to fetch coords given a square id
+  const getCoords = (squareID) => {
+    const square = board.find((sq) => sq.id.toString() === squareID.toString());
+    return square.coords;
+  };
+
+  // helper function to get square given an id
+  const getSquareGivenID = (input) =>
+    board.find((sq) => sq.id.toString() === input.toString());
+
   // helper function to find ship given a coordinate
   const findShip = (coords) => {
     for (let i = 0; i < allShips.length; i++) {
@@ -110,12 +120,12 @@ export default function Gameboard() {
   const receiveAttack = (coords) => {
     if (!isSquareFilled(coords)) {
       missedShots.push(getSquare(coords));
-      return missedShots;
+      return getSquare(coords).filled;
     }
     const targetedShip = findShip(coords);
     targetedShip.hit();
 
-    return getSquare(coords);
+    return getSquare(coords).filled;
   };
 
   // check if all ships are sunk
@@ -145,5 +155,7 @@ export default function Gameboard() {
     getSquare,
     board,
     getShipLocations,
+    getCoords,
+    getSquareGivenID,
   };
 }

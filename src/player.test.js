@@ -11,21 +11,14 @@ describe("player", () => {
   });
 
   test("AI can move", () => {
-    const AI = Player("AI", playerTwoBoard, playerOneBoard);
+    const AI = Player(playerTwoBoard, playerOneBoard);
     playerOneBoard.placeShip(3, "vertical", [0, 0]);
-    const move = AI.makeMove();
-    AI.makeMove();
+    const move = AI.makeMoveAI();
     expect(move).not.toBeNull();
   });
 
-  test("AI moves are properly recorded", () => {
-    const AI = Player("AI", playerTwoBoard, playerOneBoard);
-    AI.makeMove();
-    expect(AI.moves.size).toBe(1);
-  });
-
   test("Player move targets correct square on board - miss", () => {
-    const player = Player("Human", playerOneBoard, playerTwoBoard);
+    const player = Player(playerOneBoard, playerTwoBoard);
     player.makeMove([0, 0]);
     expect(playerTwoBoard.missedShots[0]).toBe(
       playerTwoBoard.getSquare([0, 0])
@@ -33,7 +26,7 @@ describe("player", () => {
   });
 
   test("Player move targets correct squares on board - hits", () => {
-    const player = Player("Human", playerOneBoard, playerTwoBoard);
+    const player = Player(playerOneBoard, playerTwoBoard);
     playerTwoBoard.placeShip(3, "horizontal", [0, 0]);
     player.makeMove([0, 0]);
     player.makeMove([0, 1]);
@@ -41,7 +34,7 @@ describe("player", () => {
   });
 
   test("Player sinks ship", () => {
-    const player = Player("Human", playerOneBoard, playerTwoBoard);
+    const player = Player(playerOneBoard, playerTwoBoard);
     playerTwoBoard.placeShip(3, "horizontal", [0, 0]);
     player.makeMove([0, 0]);
     player.makeMove([0, 1]);
@@ -50,7 +43,7 @@ describe("player", () => {
   });
 
   test("Player correctly sinks all ships", () => {
-    const player = Player("Human", playerOneBoard, playerTwoBoard);
+    const player = Player(playerOneBoard, playerTwoBoard);
     playerTwoBoard.placeShip(3, "horizontal", [0, 0]);
     playerTwoBoard.placeShip(2, "vertical", [5, 0]);
     player.makeMove([0, 0]);
@@ -62,7 +55,7 @@ describe("player", () => {
   });
 
   test("Player wins", () => {
-    const player = Player("Human", playerOneBoard, playerTwoBoard);
+    const player = Player(playerOneBoard, playerTwoBoard);
     playerTwoBoard.placeShip(3, "horizontal", [0, 0]);
     player.makeMove([0, 0]);
     player.makeMove([0, 1]);
