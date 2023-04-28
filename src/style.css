@@ -14,11 +14,20 @@
 
 body {
   background-color: var(--main-bgc);
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  gap: 4rem;
 }
 
 #title {
   font-size: 70px;
-  text-align: center;
   font-weight: 500;
   letter-spacing: 6px;
   font-family: var(--title-ff);
@@ -32,7 +41,6 @@ body {
 
 #player-one-board,
 #player-two-board {
-  margin-top: 5rem;
   display: grid;
   grid-template-columns: repeat(10, 45px);
   border: 1px solid gray;
@@ -48,6 +56,40 @@ body {
   width: 45px;
   border: 1px solid gray;
   background-color: var(--square-bgc);
+}
+
+#new-game-poppup {
+  margin-top: 5rem;
+  position: absolute;
+  align-self: center;
+  z-index: 3;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#new-game-poppup span {
+  font-size: 30px;
+  font-weight: 600;
+  padding-bottom: 2rem;
+}
+
+button {
+  margin-bottom: 2rem;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  background-color: purple;
+  color: white;
+  padding: 10px 40px;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.visibility {
+  visibility: hidden;
 }
 
 .ship {
@@ -69,4 +111,9 @@ body {
 
 .game-end {
   pointer-events: none;
+}
+
+.ship-selection {
+  /* background-color: rgba(0, 255, 0, 0.5); */
+  background-color: red;
 }

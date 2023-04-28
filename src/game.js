@@ -20,12 +20,19 @@ export default function Game() {
     playerTwoBoard.placeShip(4, "vertical", [7, 6]);
     playerTwoBoard.placeShip(2, "horizontal", [0, 5]);
 
-    // render initial state
-    graphics.displayBoards(playerOneBoard, playerTwoBoard);
-    graphics.displayShips(playerOneBoard, playerTwoBoard);
+    graphics.buildBoardsUI(playerOneBoard, playerTwoBoard);
 
-    // play rounds
-    graphics.renderMoves(playerOne, playerTwo, playerTwoBoard);
+    // place ships
+    graphics.displayNewGamePoppup();
+    graphics.placeShips();
+
+    // if all ships placed we can begin
+    if (playerOneBoard.allShips === 5) {
+      // render initial state
+
+      // play rounds
+      graphics.renderMoves(playerOne, playerTwo, playerTwoBoard);
+    }
   };
 
   return { startGame };
