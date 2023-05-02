@@ -138,10 +138,21 @@ export default function GraphicsController() {
     return true;
   };
 
+  // helper to update ship placement text prompt
+  const updatePrompt = (index) => {
+    if (index === 0) return "Place your Carrier";
+    if (index === 1) return "Place your Battleship";
+    if (index === 2) return "Place your Destroyer";
+    if (index === 3) return "Place your Submarine";
+    if (index === 4) return "Place your Patrol Boat";
+  };
+
   const placeShips = (board) => {
     const shipLengths = [5, 4, 3, 3, 2];
     let currentShipIndex = 0;
     const gridSquares = playerOneBoardUI.children;
+    const textPrompt = document.querySelector("#place-ship");
+    textPrompt.textContent = updatePrompt(currentShipIndex);
 
     // mouse enter handler
     const handleMouseEnter = () => (e) => {
@@ -222,6 +233,7 @@ export default function GraphicsController() {
           }
         }
         currentShipIndex += 1;
+        textPrompt.textContent = updatePrompt(currentShipIndex);
       }
     };
 
