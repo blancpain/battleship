@@ -7,7 +7,7 @@ export default function GraphicsController() {
   rotateBtn.value = "horizontal";
 
   const buildBoardsUI = (playerOneBoard, playerTwoBoard) => {
-    for (let i = 0; i < playerOneBoard.board.length; i++) {
+    for (let i = 0; i < playerOneBoard.board.length; i += 1) {
       const squareID = playerOneBoard.board[i].id;
       const newSquare = document.createElement("div");
       newSquare.classList.add("board-square");
@@ -16,7 +16,7 @@ export default function GraphicsController() {
       playerOneBoardUI.classList.add("visibility");
     }
 
-    for (let i = 0; i < playerTwoBoard.board.length; i++) {
+    for (let i = 0; i < playerTwoBoard.board.length; i += 1) {
       const squareID = playerTwoBoard.board[i].id;
       const newSquare = document.createElement("div");
       newSquare.classList.add("board-square");
@@ -46,8 +46,6 @@ export default function GraphicsController() {
       node.classList.remove("miss");
     });
   };
-
-  const displayWinner = () => { };
 
   const rotateBtnEventListener = () => {
     rotateBtn.addEventListener("click", () => {
@@ -122,52 +120,123 @@ export default function GraphicsController() {
   const isInSameCol = (index1, index2, colSize) =>
     index1 % colSize === index2 % colSize;
 
-  const placeShips = () => {
-    const carrierLength = 5;
-    const battleshipLength = 4;
-    const destroyerLength = 3;
-    const submarineLength = 3;
-    const patrolBoatLength = 2;
+  // helper to check if ship can be placed in hovered area
+  const canPlaceShip = (index, length, orientation, gridSquares) => {
+    for (let i = 0; i < length; i += 1) {
+      const hoverIndex =
+        orientation === "horizontal" ? index + i : index + i * 10;
+      if (
+        hoverIndex < 0 ||
+        hoverIndex >= 100 ||
+        gridSquares[hoverIndex].classList.contains("ship") ||
+        (orientation === "horizontal" && !isInSameRow(index, hoverIndex, 10)) ||
+        (orientation === "vertical" && !isInSameCol(index, hoverIndex, 10))
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
 
+  const placeShips = (board) => {
+    const shipLengths = [5, 4, 3, 3, 2];
+    let currentShipIndex = 0;
     const gridSquares = playerOneBoardUI.children;
 
-    // mouse enter
-    // eslint-disable-next-line no-restricted-syntax
-    for (const gridSquare of gridSquares) {
-      gridSquare.addEventListener("mouseenter", (e) => {
-        const index = Number(e.target.dataset.index);
-        for (let i = 0; i < carrierLength; i += 1) {
-          const hoverIndex =
-            rotateBtn.value === "horizontal" ? index + i : index + i * 10;
+    // mouse enter handler
+    const handleMouseEnter = () => (e) => {
+      const index = Number(e.target.dataset.index);
+      for (let i = 0; i < shipLengths[currentShipIndex]; i += 1) {
+        const hoverIndex =
+          rotateBtn.value === "horizontal" ? index + i : index + i * 10;
+        if (
+          hoverIndex >= 0 &&
+          hoverIndex < 100 &&
+          !gridSquares[hoverIndex].classList.contains("ship")
+        ) {
           if (
             (rotateBtn.value === "horizontal" &&
               isInSameRow(index, hoverIndex, 10)) ||
             (rotateBtn.value === "vertical" &&
-              isInSameCol(index, hoverIndex, 10) &&
-              hoverIndex < 100)
+              isInSameCol(index, hoverIndex, 10))
           ) {
             gridSquares[hoverIndex].classList.add("ship-selection");
           }
         }
-      });
+      }
+    };
 
-      // mouse leave
-      gridSquare.addEventListener("mouseleave", (e) => {
-        const index = Number(e.target.dataset.index);
-        for (let i = 0; i < carrierLength; i += 1) {
-          const hoverIndex =
-            rotateBtn.value === "horizontal" ? index + i : index + i * 10;
+    // mouse leave handler
+    const handleMouseLeave = () => (e) => {
+      const index = Number(e.target.dataset.index);
+      for (let i = 0; i < shipLengths[currentShipIndex]; i += 1) {
+        const hoverIndex =
+          rotateBtn.value === "horizontal" ? index + i : index + i * 10;
+        if (
+          hoverIndex >= 0 &&
+          hoverIndex < 100 &&
+          !gridSquares[hoverIndex].classList.contains("ship")
+        ) {
           if (
             (rotateBtn.value === "horizontal" &&
               isInSameRow(index, hoverIndex, 10)) ||
             (rotateBtn.value === "vertical" &&
-              isInSameCol(index, hoverIndex, 10) &&
-              hoverIndex < 100)
+              isInSameCol(index, hoverIndex, 10))
           ) {
             gridSquares[hoverIndex].classList.remove("ship-selection");
           }
         }
-      });
+      }
+    };
+
+    // click event handler
+    const handleClicks = () => (e) => {
+      const index = Number(e.target.dataset.index);
+      const coords = board.getCoords(index);
+      const orientation = rotateBtn.value;
+      const shipLength = shipLengths[currentShipIndex];
+      if (canPlaceShip(index, shipLength, orientation, gridSquares)) {
+        if (currentShipIndex >= shipLengths.length) {
+          // all ships have been placed we remove the event listener
+          // or we just return null?
+          // or actually we terminate this and we go on with the game...
+          return null;
+        }
+        board.placeShip(shipLength, orientation, coords);
+        for (let i = 0; i < shipLength; i += 1) {
+          const hoverIndex =
+            orientation === "horizontal" ? index + i : index + i * 10;
+          if (
+            hoverIndex >= 0 &&
+            hoverIndex < 100 &&
+            !gridSquares[hoverIndex].classList.contains("ship")
+          ) {
+            if (
+              (orientation === "horizontal" &&
+                isInSameRow(index, hoverIndex, 10)) ||
+              (orientation === "vertical" && isInSameCol(index, hoverIndex, 10))
+            ) {
+              gridSquares[hoverIndex].classList.add("ship");
+              gridSquares[hoverIndex].classList.remove("ship-selection");
+            }
+          }
+        }
+        currentShipIndex += 1;
+      }
+    };
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const gridSquare of gridSquares) {
+      // listeners
+      gridSquare.addEventListener(
+        "mouseenter",
+        handleMouseEnter(currentShipIndex)
+      );
+      gridSquare.addEventListener(
+        "mouseleave",
+        handleMouseLeave(currentShipIndex)
+      );
+      gridSquare.addEventListener("click", handleClicks(currentShipIndex));
     }
   };
 

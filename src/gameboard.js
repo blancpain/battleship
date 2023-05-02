@@ -88,7 +88,7 @@ export default function Gameboard() {
 
         const coordinates = [coordX, coords[1]];
         shipLocation.push(coordinates);
-        coordX -= 1;
+        coordX += 1;
       }
       // if ship is horizontal X coord stays the same and we only increment Y
     } else if (orientation === "horizontal") {

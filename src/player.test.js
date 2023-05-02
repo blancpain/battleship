@@ -50,7 +50,7 @@ describe("player", () => {
     player.makeMove([0, 1]);
     player.makeMove([0, 2]);
     player.makeMove([5, 0]);
-    player.makeMove([4, 0]);
+    player.makeMove([6, 0]);
     expect(playerTwoBoard.shipsSunk()).toBe(true);
   });
 

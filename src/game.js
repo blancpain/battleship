@@ -11,20 +11,16 @@ export default function Game() {
   const playerTwo = Player(playerTwoBoard, playerOneBoard);
 
   const startGame = () => {
-    // initial setup
-    playerOneBoard.placeShip(3, "horizontal", [7, 5]);
-    playerOneBoard.placeShip(5, "horizontal", [3, 2]);
-    playerOneBoard.placeShip(2, "horizontal", [8, 2]);
+    graphics.buildBoardsUI(playerOneBoard, playerTwoBoard);
 
+    // place AI ships
     playerTwoBoard.placeShip(3, "horizontal", [2, 2]);
     playerTwoBoard.placeShip(4, "vertical", [7, 6]);
     playerTwoBoard.placeShip(2, "horizontal", [0, 5]);
 
-    graphics.buildBoardsUI(playerOneBoard, playerTwoBoard);
-
-    // place ships
+    // place user ships
     graphics.displayNewGamePoppup();
-    graphics.placeShips();
+    graphics.placeShips(playerOneBoard);
 
     // if all ships placed we can begin
     if (playerOneBoard.allShips === 5) {

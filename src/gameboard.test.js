@@ -15,7 +15,7 @@ describe("gameboard", () => {
   });
 
   test("ship cannot be placed out of bounds - vertically", () => {
-    expect(newGameboard.placeShip(3, "vertical", [0, 0])).toBeNull();
+    expect(newGameboard.placeShip(3, "vertical", [9, 0])).toBeNull();
   });
 
   test("ship cannot be placed out of bounds - horizontally", () => {

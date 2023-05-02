@@ -94,6 +94,7 @@ button {
 
 .ship {
   background-color: #000;
+  z-index: 5;
 }
 
 .hit,
@@ -114,6 +115,5 @@ button {
 }
 
 .ship-selection {
-  /* background-color: rgba(0, 255, 0, 0.5); */
-  background-color: red;
+  background-color: rgba(0, 255, 0, 0.5);
 }
