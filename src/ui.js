@@ -1,10 +1,17 @@
+import Game from "./game";
+
 export default function GraphicsController() {
+  const game = Game();
   // ui containers
   const playerOneBoardUI = document.querySelector("#player-one-board");
   const playerTwoBoardUI = document.querySelector("#player-two-board");
   const newGamePoppup = document.querySelector("#new-game-poppup");
+  const boardsContainer = document.querySelector(".gameboard-container");
   const rotateBtn = document.querySelector("#rotate");
   rotateBtn.value = "horizontal";
+  const endGamePoppup = document.querySelector(".game-over-poppup");
+  const endGameBgcFilter = document.querySelector("#filter");
+  const playAgainBtn = document.querySelector("#play-again");
 
   const buildBoardsUI = (playerOneBoard, playerTwoBoard) => {
     for (let i = 0; i < playerOneBoard.board.length; i += 1) {
@@ -26,72 +33,57 @@ export default function GraphicsController() {
     }
   };
 
-  const displayNewGamePoppup = (playerOneBoard) => {
+  const displayNewGamePoppup = () => {
+    boardsContainer.removeChild(playerOneBoardUI);
+    boardsContainer.removeChild(playerTwoBoardUI);
     newGamePoppup.appendChild(playerOneBoardUI);
     playerOneBoardUI.classList.remove("visibility");
   };
 
-  const clearBoards = () => {
-    playerOneBoardUI.childNodes.forEach((node) => {
-      node.classList.add("board-square");
-      node.classList.remove("ship");
-      node.classList.remove("hit");
-      node.classList.remove("miss");
-    });
-
-    playerTwoBoardUI.childNodes.forEach((node) => {
-      node.classList.add("board-square");
-      node.classList.remove("ship");
-      node.classList.remove("hit");
-      node.classList.remove("miss");
-    });
+  const resetGame = () => {
+    while (playerOneBoardUI.hasChildNodes()) {
+      playerOneBoardUI.removeChild(playerOneBoardUI.lastChild);
+    }
+    while (playerTwoBoardUI.hasChildNodes()) {
+      playerTwoBoardUI.removeChild(playerTwoBoardUI.lastChild);
+    }
+    newGamePoppup.classList.remove("visibility");
+    playerTwoBoardUI.classList.toggle("game-end");
+    playerOneBoardUI.style.pointerEvents = "all";
+    rotateBtn.value = "horizontal";
   };
 
-  const rotateBtnEventListener = () => {
-    rotateBtn.addEventListener("click", () => {
-      rotateBtn.value =
-        rotateBtn.value === "horizontal" ? "vertical" : "horizontal";
-    });
+  const handleRotateBtnClick = () => {
+    rotateBtn.value =
+      rotateBtn.value === "horizontal" ? "vertical" : "horizontal";
   };
 
-  // TODO - for the real game we just don't render playertwo board...
-  const displayShips = (playerOneBoard, playerTwoBoard) => {
-    const playerOneShipIDs = playerOneBoard.getShipLocations();
-    const playerTwoShipIDs = playerTwoBoard.getShipLocations();
-
-    playerOneBoardUI.childNodes.forEach((node) => {
-      playerOneShipIDs.forEach((id) => {
-        if (Number(node.dataset.index) === Number(id)) {
-          node.classList.add("ship");
-        }
-      });
-    });
-
-    playerTwoBoardUI.childNodes.forEach((node) => {
-      playerTwoShipIDs.forEach((id) => {
-        if (Number(node.dataset.index) === Number(id)) {
-          node.classList.add("ship");
-        }
-      });
-    });
+  const handleEndGame = () => {
+    playerTwoBoardUI.classList.toggle("game-end");
+    resetGame();
+    game.startGame();
   };
 
   const renderMoves = (playerOne, playerTwo, playerTwoBoard) => {
     playerTwoBoardUI.childNodes.forEach((square) => {
       square.addEventListener("click", () => {
         const squareCoords = playerTwoBoard.getCoords(square.dataset.index);
-        const attack = playerOne.makeMove(squareCoords);
-        if (attack === true) {
+        const isHit = playerOne.makeMove(squareCoords);
+        if (isHit === true) {
           square.classList.add("hit");
-        } else if (attack === false) {
+        } else if (isHit === false) {
           square.classList.add("miss");
         }
 
         // check if player won on last move
         if (playerOne.checkWin()) {
-          playerTwoBoardUI.classList.toggle("game-end");
-          clearBoards();
-          return;
+          endGameBgcFilter.classList.toggle("filter-opened");
+          endGamePoppup.classList.add("open-end-game-poppup");
+          playAgainBtn.addEventListener("click", handleEndGame);
+          // playerTwoBoardUI.classList.toggle("game-end");
+          // resetGame();
+          // game.startGame();
+          return null;
         }
 
         // player has moved so we call makeMove for the AI
@@ -105,8 +97,13 @@ export default function GraphicsController() {
 
         // check if computer won on last move
         if (playerTwo.checkWin()) {
-          playerTwoBoardUI.classList.toggle("game-end");
-          clearBoards();
+          endGameBgcFilter.classList.toggle("filter-opened");
+          endGamePoppup.classList.add("open-end-game-poppup");
+          // playerTwoBoardUI.classList.toggle("game-end");
+          // resetGame();
+          // game.startGame();
+          playAgainBtn.addEventListener("click", handleEndGame);
+          return null;
         }
       });
     });
@@ -140,14 +137,17 @@ export default function GraphicsController() {
 
   // helper to update ship placement text prompt
   const updatePrompt = (index) => {
-    if (index === 0) return "Place your Carrier";
-    if (index === 1) return "Place your Battleship";
-    if (index === 2) return "Place your Destroyer";
-    if (index === 3) return "Place your Submarine";
-    if (index === 4) return "Place your Patrol Boat";
+    if (index === 0) return "Carrier";
+    if (index === 1) return "Battleship";
+    if (index === 2) return "Destroyer";
+    if (index === 3) return "Submarine";
+    if (index === 4) return "Patrol Boat";
   };
 
   const placeShips = (board) => {
+    // add rotate btn event listener
+    rotateBtn.addEventListener("click", handleRotateBtnClick);
+
     const shipLengths = [5, 4, 3, 3, 2];
     let currentShipIndex = 0;
     const gridSquares = playerOneBoardUI.children;
@@ -207,12 +207,6 @@ export default function GraphicsController() {
       const orientation = rotateBtn.value;
       const shipLength = shipLengths[currentShipIndex];
       if (canPlaceShip(index, shipLength, orientation, gridSquares)) {
-        if (currentShipIndex >= shipLengths.length) {
-          // all ships have been placed we remove the event listener
-          // or we just return null?
-          // or actually we terminate this and we go on with the game...
-          return null;
-        }
         board.placeShip(shipLength, orientation, coords);
         for (let i = 0; i < shipLength; i += 1) {
           const hoverIndex =
@@ -231,6 +225,21 @@ export default function GraphicsController() {
               gridSquares[hoverIndex].classList.remove("ship-selection");
             }
           }
+        }
+        if (currentShipIndex === shipLengths.length - 1) {
+          // remove rotate btn event listener so that it
+          // doesn't persist accross games
+          rotateBtn.removeEventListener("click", handleRotateBtnClick);
+
+          // update UI
+          newGamePoppup.removeChild(playerOneBoardUI);
+          newGamePoppup.classList.add("visibility");
+          boardsContainer.appendChild(playerOneBoardUI);
+          boardsContainer.appendChild(playerTwoBoardUI);
+          playerOneBoardUI.classList.remove("visibility");
+          playerTwoBoardUI.classList.remove("visibility");
+          playerOneBoardUI.style.pointerEvents = "none";
+          return null;
         }
         currentShipIndex += 1;
         textPrompt.textContent = updatePrompt(currentShipIndex);
@@ -252,13 +261,9 @@ export default function GraphicsController() {
     }
   };
 
-  // event listeners
-  rotateBtnEventListener();
-
   return {
     displayNewGamePoppup,
     buildBoardsUI,
-    displayShips,
     renderMoves,
     placeShips,
   };

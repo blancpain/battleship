@@ -40,7 +40,5 @@ export default function Player(ownBoard, enemyBoard) {
     return false;
   };
 
-  // TODO -> placeShip(coords) => ownBoard.placeship()...
-
   return { makeMove, makeMoveAI, moves, getWins, checkWin };
 }

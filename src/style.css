@@ -21,6 +21,7 @@ body {
 .content {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   position: relative;
   gap: 4rem;
@@ -37,6 +38,14 @@ body {
   display: flex;
   justify-content: space-evenly;
   gap: 2rem;
+}
+
+.text-prompt {
+  margin-bottom: 2rem;
+}
+
+#place-ship {
+  color: #c3f92c;
 }
 
 #player-one-board,
@@ -75,8 +84,8 @@ body {
   padding-bottom: 2rem;
 }
 
-button {
-  margin-bottom: 2rem;
+button#rotate {
+  margin-bottom: 3rem;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -116,4 +125,50 @@ button {
 
 .ship-selection {
   background-color: rgba(0, 255, 0, 0.5);
+}
+
+.game-over-poppup {
+  position: fixed;
+  min-width: 500px;
+  min-height: 350px;
+  left: 50%;
+  top: 50%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: blue;
+  visibility: hidden;
+  transform: translate(-50%, -50%) scale(0.1);
+  transition: transform 0.4s;
+}
+
+.open-end-game-poppup {
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.filter-opened {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 900;
+}
+
+button#play-again {
+  margin-bottom: 3rem;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  background-color: purple;
+  color: white;
+  padding: 30px 90px;
+  cursor: pointer;
 }

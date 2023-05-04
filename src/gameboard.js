@@ -117,6 +117,17 @@ export default function Gameboard() {
     return newShip;
   };
 
+  const resetShips = () => {
+    allShips.length = 0;
+  };
+
+  const resetBoard = () => {
+    board.forEach((square) => {
+      // eslint-disable-next-line no-param-reassign
+      square.filled = false;
+    });
+  };
+
   const receiveAttack = (coords) => {
     if (!isSquareFilled(coords)) {
       missedShots.push(getSquare(coords));
@@ -157,5 +168,7 @@ export default function Gameboard() {
     getShipLocations,
     getCoords,
     getSquareGivenID,
+    resetBoard,
+    resetShips,
   };
 }
