@@ -133,7 +133,8 @@ button#rotate {
   left: 50%;
   top: 50%;
   border-radius: 8px;
-  background-color: var(--square-bgc);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: var(--main-bgc);
   display: flex;
   flex-direction: column;
   justify-content: center;
