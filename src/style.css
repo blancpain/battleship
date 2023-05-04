@@ -172,3 +172,8 @@ button#play-again {
   padding: 30px 90px;
   cursor: pointer;
 }
+
+#winner {
+  font-size: 45px;
+  margin-bottom: 3rem;
+}

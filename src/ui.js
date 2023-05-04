@@ -1,3 +1,4 @@
+import { doc } from "prettier";
 import Game from "./game";
 
 export default function GraphicsController() {
@@ -12,6 +13,7 @@ export default function GraphicsController() {
   const endGamePoppup = document.querySelector(".game-over-poppup");
   const endGameBgcFilter = document.querySelector("#filter");
   const playAgainBtn = document.querySelector("#play-again");
+  const winnerPrompt = document.querySelector("#winner");
 
   const buildBoardsUI = (playerOneBoard, playerTwoBoard) => {
     for (let i = 0; i < playerOneBoard.board.length; i += 1) {
@@ -47,10 +49,13 @@ export default function GraphicsController() {
     while (playerTwoBoardUI.hasChildNodes()) {
       playerTwoBoardUI.removeChild(playerTwoBoardUI.lastChild);
     }
+    playAgainBtn.removeEventListener("click", handleEndGame);
     newGamePoppup.classList.remove("visibility");
     playerTwoBoardUI.classList.toggle("game-end");
     playerOneBoardUI.style.pointerEvents = "all";
     rotateBtn.value = "horizontal";
+    endGameBgcFilter.classList.toggle("filter-opened");
+    endGamePoppup.classList.remove("open-end-game-poppup");
   };
 
   const handleRotateBtnClick = () => {
@@ -77,12 +82,10 @@ export default function GraphicsController() {
 
         // check if player won on last move
         if (playerOne.checkWin()) {
+          winnerPrompt.textContent = "You won!";
           endGameBgcFilter.classList.toggle("filter-opened");
           endGamePoppup.classList.add("open-end-game-poppup");
           playAgainBtn.addEventListener("click", handleEndGame);
-          // playerTwoBoardUI.classList.toggle("game-end");
-          // resetGame();
-          // game.startGame();
           return null;
         }
 
@@ -97,11 +100,9 @@ export default function GraphicsController() {
 
         // check if computer won on last move
         if (playerTwo.checkWin()) {
+          winnerPrompt.textContent = "Computer won.";
           endGameBgcFilter.classList.toggle("filter-opened");
           endGamePoppup.classList.add("open-end-game-poppup");
-          // playerTwoBoardUI.classList.toggle("game-end");
-          // resetGame();
-          // game.startGame();
           playAgainBtn.addEventListener("click", handleEndGame);
           return null;
         }
@@ -231,7 +232,7 @@ export default function GraphicsController() {
           // doesn't persist accross games
           rotateBtn.removeEventListener("click", handleRotateBtnClick);
 
-          // update UI
+          // update UI to prepate game start
           newGamePoppup.removeChild(playerOneBoardUI);
           newGamePoppup.classList.add("visibility");
           boardsContainer.appendChild(playerOneBoardUI);
@@ -248,7 +249,7 @@ export default function GraphicsController() {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const gridSquare of gridSquares) {
-      // listeners
+      // place ship listeners
       gridSquare.addEventListener(
         "mouseenter",
         handleMouseEnter(currentShipIndex)

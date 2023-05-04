@@ -9,11 +9,24 @@
 <script defer src="main.js"></script></head>
 
 <body>
-  <div id="title">Battleships</div>
-  <div class="new-game-poppup"></div>
-  <div class="gameboard-container">
-    <div id="player-one-board"></div>
-    <div id="player-two-board"></div>
+  <div id="filter"></div>
+  <div class="game-over-poppup">
+    <button id="play-again">Play again?</button>
+  </div>
+  <div class="content">
+    <span id="title">Battleships</span>
+    <div id="new-game-poppup">
+      <div class="text-prompt">
+        <span>Place your </span>
+        <span id="place-ship"></span>
+      </div>
+      <button id="rotate">Rotate ship</button>
+      <div class="type-of-ship"></div>
+    </div>
+    <div class="gameboard-container">
+      <div id="player-one-board"></div>
+      <div id="player-two-board"></div>
+    </div>
   </div>
 </body>
 
