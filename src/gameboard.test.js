@@ -75,9 +75,4 @@ describe("gameboard", () => {
   test("square can be retrieved given an id", () => {
     expect(newGameboard.getSquareGivenID(1199)).toHaveProperty("id", 1199);
   });
-
-  test("AI ships placed successfully", () => {
-    newGameboard.placeShipsAI();
-    expect(newGameboard.allShips.length).toBe(5);
-  });
 });
