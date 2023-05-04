@@ -121,14 +121,25 @@ export default function Gameboard() {
   const placeShipsAI = () => {
     const shipLengths = [5, 4, 3, 3, 2];
     const orientations = ["vertical", "horizontal"];
-    // we can look at a random square (out of 100) and make the loop last until all 5 ships are placed
-    // for each square we can convert it to coords to use placeShip and then randomly select the orientation
-    // CHANGE BELOW TO GET A RAND NUMBER FROM 100 to 199
-    const randomNum = Math.floor(Math.random() * 100);
-    const corrsepondingCoords = board.getCoords(randomNum);
 
-    while (allShips.length <= 5) {
-      // do sth
+    while (allShips.length < 5) {
+      const randomNum = Math.floor(Math.random() * (200 - 100) + 100);
+      const randomCoords = getCoords(randomNum);
+      const randomOrientation =
+        orientations[Math.floor(Math.random() * orientations.length)];
+      const randomShipLength =
+        shipLengths[Math.floor(Math.random() * shipLengths.length)];
+
+      const newShip = placeShip(
+        randomShipLength,
+        randomOrientation,
+        randomCoords
+      );
+
+      if (newShip) {
+        const currentShipIndex = shipLengths.indexOf(randomShipLength);
+        shipLengths.splice(currentShipIndex, 1);
+      }
     }
   };
 

@@ -20,7 +20,7 @@ export default function Game() {
     graphics.buildBoardsUI(playerOneBoard, playerTwoBoard);
 
     // place ships AI
-    playerTwoBoard.placeShip(2, "horizontal", [0, 0]);
+    playerTwoBoard.placeShipsAI();
     // place ships user
     graphics.displayNewGamePoppup();
     graphics.placeShips(playerOneBoard);
