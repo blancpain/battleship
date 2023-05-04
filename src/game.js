@@ -19,10 +19,11 @@ export default function Game() {
     const playerTwo = Player(playerTwoBoard, playerOneBoard);
     graphics.buildBoardsUI(playerOneBoard, playerTwoBoard);
 
-    // place ships
+    // place ships AI
+    playerTwoBoard.placeShip(2, "horizontal", [0, 0]);
+    // place ships user
     graphics.displayNewGamePoppup();
     graphics.placeShips(playerOneBoard);
-    playerTwoBoard.placeShip(2, "horizontal", [0, 0]);
 
     // play rounds
     graphics.renderMoves(playerOne, playerTwo, playerTwoBoard);
