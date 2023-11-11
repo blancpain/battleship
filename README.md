@@ -23,7 +23,7 @@ This Battleship project showcases the strategic naval warfare game where players
 
 Check out the live preview to experience the Battleship game in action! ⚓
 
-[**LIVE PREVIEW**](https://blancpain.github.io/battleship/)  <!-- Add the actual link to your live preview -->
+[**LIVE PREVIEW**](https://blancpain.github.io/battleship/)
 
 Feel free to clone and integrate this project into your portfolio, showcasing your skills in web development and game implementation. Have fun commanding your fleet and sinking enemy ships! 🚀
 
