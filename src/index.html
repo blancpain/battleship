@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleships</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Battleships</title>
-</head>
-
-<body>
-  <div id="filter"></div>
-  <div class="game-over-poppup">
-    <div id="winner"></div>
-    <button id="play-again">Play again?</button>
-  </div>
-  <div class="content">
-    <span id="title">Battleships</span>
-    <div id="new-game-poppup">
-      <div class="text-prompt">
-        <span>Place your </span>
-        <span id="place-ship"></span>
+  <body>
+    <div id="filter"></div>
+    <div class="game-over-poppup">
+      <div id="winner"></div>
+      <button id="play-again">Play again?</button>
+    </div>
+    <div class="content">
+      <span id="title">Battleships</span>
+      <div id="new-game-poppup">
+        <div class="text-prompt">
+          <span>Place your </span>
+          <span id="place-ship"></span>
+        </div>
+        <button id="rotate">Rotate ship</button>
+        <div class="type-of-ship"></div>
       </div>
-      <button id="rotate">Rotate ship</button>
-      <div class="type-of-ship"></div>
+      <div class="gameboard-container">
+        <div id="player-one-board"></div>
+        <div id="player-two-board"></div>
+      </div>
     </div>
-    <div class="gameboard-container">
-      <div id="player-one-board"></div>
-      <div id="player-two-board"></div>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>

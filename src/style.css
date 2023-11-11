@@ -186,3 +186,32 @@ button:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+@media only screen and (max-width: 950px) {
+  #title {
+    font-size: 40px;
+  }
+
+  .gameboard-container {
+    flex-direction: column;
+    padding-bottom: 2rem;
+  }
+
+  #player-one-board,
+  #player-two-board {
+    grid-template-columns: repeat(10, 30px);
+  }
+
+  .board-square {
+    height: 30px;
+    width: 30px;
+  }
+  .game-over-poppup {
+    min-width: 350px;
+    min-height: 350px;
+  }
+  button#play-again {
+    font-size: 25px;
+    padding: 20px 70px;
+  }
+}
